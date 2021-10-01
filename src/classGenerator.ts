@@ -31,11 +31,17 @@ function a2z(p:string){
     return (p.toLowerCase() == p) ? A2Z.toLowerCase() : A2Z;
 }
 function capfirst(s: string = "")  {
+    if (startsWithDigit(s)) s = `N${s}`
     return s[0]?.toUpperCase() + s?.substring(1);
 }
 
 function lowfirst(s: string = "") {
+    if (startsWithDigit(s)) s = `N${s}`
     return s[0]?.toLowerCase() + s?.substring(1);
+}
+
+function startsWithDigit(s: string) {
+  return s.charCodeAt(0) >= 48 && s.charCodeAt(0) <= 57
 }
 
 function choiceBody(m: any, names: string[]): string {

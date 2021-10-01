@@ -66,7 +66,6 @@ export function verbose(){
  */
 export function generateTemplateClassesFromXSD(xsdFilePath: string, dependencies: Map<string,string> = {}, xmlnsName = 'xmlns'): void {
     let imports = dependencies;
-    console.log(JSON.stringify(dependencies));
 
     const xsdString = fs.readFileSync(xsdFilePath, 'utf8');
     const fileName =  xsdFilePath.split("/").reverse()[0].replace(".xsd", ".ts");
