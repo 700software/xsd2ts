@@ -231,9 +231,14 @@ export function variants( pattern: string, index = 0, maxLength = MAX_LENGTH): [
             const [min, max] = r.split(',').map(s => +s);
 
             options = options.map(o => o.substring(0, o.length - 1));
+            if (!options.length) // currently options.length==0 for input pattern [0-9]{12}[a-z0-9]{8}
+                return [null, i] // abort preventing TypeError: Cannot read property 'length' of undefined
             const orgLength = options[options.length - 1].length;
-            //options = options.map(o => o.substring(0, o.length - 1));
+
+            if (!result) // currently result===null for input pattern ([A-Z0-9\-]|&){1,4}
+                return [null, i] // abort preventing TypeError: Cannot read property 'split' of null on next line
             const chars = result.split('');
+
             chars.unshift('');
             while (options[options.length - 1].length < Math.min(maxLength, (1+max)) && options.length < MAX_OPTIONS_LENGTH){
                 //console.log('    buildVariants options:', options, result, Math.min(maxLength, +max), options[options.length - 1].length, r);
@@ -269,7 +274,13 @@ export function variants( pattern: string, index = 0, maxLength = MAX_LENGTH): [
     return [result, index];
 }
 
-
+/**
+ * seems to take a regexp from the `.xsd` and return some kind of array of strings
+ * 
+ * example input `options("[A-Za-z0-9:\.\-]{1,30}", 10, 100)`
+ * returns `[['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], 10]`
+ * but that doesn't make much sense to me. I suspect this was a partial solution that worked only good enough for the original author. —@700software
+ */
 export function option(pattern: string, index = 0, maxLength = MAX_LENGTH): [string[], number]  {
     //console.log('  options pattern:', index, pattern, pattern[index]);
     const offset = index;

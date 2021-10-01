@@ -61,6 +61,9 @@ export function verbose(){
     useVerboseLogModus();
 }
 
+/**
+ * @param xsdFilePath should not contain Windows path separators `\`.
+ */
 export function generateTemplateClassesFromXSD(xsdFilePath: string, dependencies: Map<string,string> = {}, xmlnsName = 'xmlns'): void {
     let imports = dependencies;
     console.log(JSON.stringify(dependencies));
